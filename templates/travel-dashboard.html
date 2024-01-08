@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="w-full flex flex-col h-screen overflow-y-hidden">
+        <!-- Desktop Header -->
+        <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
+            <div class="w-1/2"></div>
+            <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
+                <button @click="isOpen = !isOpen" class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">
+                    {%if request.user.is_authenticated%}
+                    <img src="/media/{{photo.image}}" alt="Profile Picture" class="w-full h-full object-cover">
+                    {%endif%}
+                </button>
+                <button x-show="isOpen" @click="isOpen = false" class="h-full w-full fixed inset-0 cursor-default"></button>
+                <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
+                    {% if request.user.is_anonymous  %}
+                    <a href="/user/login" class="block px-4 py-2 account-link hover:text-white">Sign In</a>
+                    {%else%}
+                    <a href="/user/dashboard" class="block px-4 py-2 account-link hover:text-white">Account</a>
+                    {%endif%}
+                </div>
+            </div>
+        </header>
+        <!-- Mobile Header & Nav -->
+        <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Admin</a>
+                <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
+                    <i x-show="!isOpen" class="fas fa-bars"></i>
+                    <i x-show="isOpen" class="fas fa-times"></i>
+                </button>
+            </div>
+        </header>
+        {% if request.user.is_anonymous  %}
+        <div class="w-full mt-12 px-5">
+            <p class="text-xl pb-3 flex items-center mr-3 fa-list">You're not logged in, please login .<a class="text-blue-500" href="/user/login">here</a></p>
+        </div>
+        {% elif request.user.is_superuser %}
+        <div class="w-full mt-12 px-5">
+            <p class="text-xl pb-3 flex items-center mr-3 fa-list">Hei Boss.</p>
+        </div>
+        {%endif%}
+        
+        <div class="w-full mt-12 px-5">
+            <p class="text-xl pb-3 flex items-center">
+                <i class="fas fa-list mr-3"></i> ALL Trips
+            </p>
+            <div class="bg-white overflow-auto">
+                <table class="min-w-full bg-white">
+                    <thead class="bg-gray-800 text-white">
+                        <tr>
+                            <th class="w-1/5 text-left py-3 px-4 uppercase font-semibold text-sm">Title</th>
+                            <th class="w-1/5 text-left py-3 px-4 uppercase font-semibold text-sm">Start Date</th>
+                            <th class="w-1/5 text-left py-3 px-4 uppercase font-semibold text-sm">End Date</th>
+                            <th class="w-1/5 text-left py-3 px-4 uppercase font-semibold text-sm">Destination</th>
+                            <th class="w-1/5 text-left py-3 px-4 uppercase font-semibold text-sm">ِDescription</th>
+                            <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Lead</th>
+                        </tr>
+                    </thead>
+
+                    {% for travel in travels %}
+                    <tbody class="text-gray-700">
+                        <tr>
+                            <td class="w-1/5 text-left py-3 px-4"><a href="# ">{{travel.title}}</a></td>
+                            <td class="w-1/5 text-left py-3 px-4">{{travel.start_date}}</td>
+                            <td class="w-1/5 text-left py-3 px-4">{{travel.end_date}}</td>
+                            <td class="w-1/5 text-left py-3 px-4">{{travel.destination}}</td>
+                            <td class="w-1/5 text-left py-3 px-4">{{travel.description}}</td>
+                            <td class="text-left py-3 px-4">{{travel.tour_lead}}</td>
+                        </tr>
+                    </tbody>
+                    {%endfor%}
+                </table>
+            </div>
+        </div>
+            
+    </div>
+{%endblock%}

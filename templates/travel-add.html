@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="w-full flex flex-col h-screen overflow-y-hidden">
+
+    <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
+        <div class="w-1/2"></div>
+        <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
+            <button @click="isOpen = !isOpen" class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">
+              <img src="/media/{{photo.image}}" alt="Profile Picture" class="w-full h-full object-cover">
+            </button>
+            <button x-show="isOpen" @click="isOpen = false" class="h-full w-full fixed inset-0 cursor-default"></button>
+            <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
+                {% if request.user.is_anonymous  %}
+                <a href="/user/login" class="block px-4 py-2 account-link hover:text-white">Sign In</a>
+                {%else%}
+                <a href="/user/dashboard" class="block px-4 py-2 account-link hover:text-white">Account</a>
+                {%endif%}
+            </div>
+        </div>
+    </header>
+    <div class="w-full max-w">
+        <h2 class="card-title pl-6 font-bold text-lg">Add Travel</h3>
+        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 overflow-y-hidden" action="" method="POST">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
+            Title
+            </label>
+            {{ form.title }}
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="start_date">
+            Start Date
+            </label>
+            {{ form.start_date }}
+        </div>
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="end_date">
+            End Date
+            </label>
+            {{ form.end_date }}
+        </div>
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="destination">
+            Destination
+            </label>
+            {{ form.destination }}
+        </div>
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
+            Description
+            </label>
+            {{ form.description }}
+        </div>
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="tour_lead">
+
+            </label>
+            {{ form.tour_lead.as_hidden }}
+        </div>
+        {%if form.errors %}
+        <div class="error-message">
+            <p>An error occurred:</p>
+            <ul>
+                {% for field_errors in form.errors.values %}
+                    {% for error in field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <div class="flex items-center justify-between">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit" value="submit">
+            Add
+            </button>
+        </div>
+        </form>
+    </div>
+</div>
+{%endblock%}

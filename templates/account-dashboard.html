@@ -1,0 +1,61 @@
+{%extends 'base-account.html'%}
+{%block content%}
+<main class="flex-1 p-4 overflow-hidden bg-white">
+
+    <section>
+      <h2 class="text-2xl font-bold mb-4">Info Section</h2>
+      <div class="bg-white p-4 shadow-md rounded-md">
+        <!-- Info Content Goes Here -->
+        <div class="flex items-center mb-4">
+          <div class="mr-4">
+            <!-- Circular picture frame -->
+            <div class="w-16 h-16 border-2 border-blue-500 rounded-full overflow-hidden">
+              <!-- Placeholder for the picture -->
+              <img src="/media/{{photo.image}}" alt="Profile Picture" class="w-full h-full object-cover">
+            </div>
+          </div>
+          <div>
+            <!-- Name field -->
+            <p class="text-lg font-semibold">Name: {{user.username}}</p>
+            <!-- Email field -->
+            <p class="text-sm text-gray-500">Email: {{user.email}}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <!-- Table Section -->
+  <section class="mt-4 ">
+    <h2 class="text-2xl font-bold mb-2">Table Section</h2>
+    <div class="bg-white p-4 shadow-lg rounded-md overflow-hidden">
+      <table class="w-full table-auto divide-y divide-gray-200">
+        <!-- Table Header -->
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="w-1/5 font-bold text-left py-3 px-4 uppercase text-sm">Title</th>
+            <th class="w-1/5 font-bold text-left py-3 px-4 uppercase text-sm">Start Date</th>
+            <th class="w-1/5 font-bold text-left py-3 px-4 uppercase text-sm">End Date</th>
+            <th class="w-1/5 font-bold text-left py-3 px-4 uppercase text-sm">Destination</th>
+            <th class="w-1/5 font-bold text-left py-3 px-4 uppercase text-sm">ِDescription</th>
+          </tr>
+        </thead>
+        <!-- Table Body -->
+        {% for travel in travels %}
+        <tbody class="text-gray-800">
+            <tr>
+                <td class="w-1/5 text-left font-semibold  py-3 px-4"><a href="# ">{{travel.title}}</a></td>
+                <td class="w-1/5 text-left font-semibold  py-3 px-4">{{travel.start_date}}</td>
+                <td class="w-1/5 text-left font-semibold  py-3 px-4">{{travel.end_date}}</td>
+                <td class="w-1/5 text-left font-semibold  py-3 px-4">{{travel.destination}}</td>
+                <td class="w-1/5 text-left font-semibold  py-3 px-4">{{travel.description}}</td>
+            </tr>
+        </tbody>
+        {%endfor%}
+      </table>
+    </div>
+  </section>
+
+  <!-- Info Section -->
+
+</main>
+{%endblock%}
